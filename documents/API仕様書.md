@@ -105,6 +105,7 @@ Article一覧。作成日時の降順で返す。
     {
       "id": "550e8400-e29b-41d4-a716-446655440000",
       "title": "Understanding Latency in Distributed Systems",
+      "url": "https://example.com/latency-article",
       "sentence_count": 2,
       "generation_status_summary": {
         "pending": 0,
@@ -137,6 +138,7 @@ Article詳細。配下のSentence一覧と各Sentenceの生成状況を含む。
 {
   "id": "550e8400-e29b-41d4-a716-446655440000",
   "title": "Understanding Latency in Distributed Systems",
+  "url": "https://example.com/latency-article",
   "body": "Latency is the time delay between a request and a response. In distributed systems, latency can accumulate across multiple network hops.",
   "created_at": "2026-03-02T10:00:00Z",
   "sentences": [
@@ -248,6 +250,10 @@ Article詳細。配下のSentence一覧と各Sentenceの生成状況を含む。
         "target_word": "delay",
         "choices": ["遅延", "帯域幅", "スループット", "冗長性"]
       },
+      "source": {
+        "title": "Understanding Latency in Distributed Systems",
+        "url": "https://example.com/latency-article"
+      },
       "created_at": "2026-03-02T10:05:00Z"
     },
     {
@@ -259,6 +265,10 @@ Article詳細。配下のSentence一覧と各Sentenceの生成状況を含む。
       "explanation": "「latency」は分散システムにおいてネットワークホップをまたいで蓄積する遅延時間のこと。",
       "details": {
         "target_word": "latency"
+      },
+      "source": {
+        "title": "Understanding Latency in Distributed Systems",
+        "url": "https://example.com/latency-article"
       },
       "created_at": "2026-03-02T10:05:00Z"
     }
@@ -284,6 +294,13 @@ Article詳細。配下のSentence一覧と各Sentenceの生成状況を含む。
 | `target_word` | 空欄にした元の英単語 |
 
 `question_text` はAIが生成した穴埋め文（`___` で空欄）。`correct_answer` は元の英単語。
+
+**sourceフィールド**
+
+| フィールド | 説明 |
+|----------|------|
+| `source.title` | 出典記事のタイトル |
+| `source.url` | 出典記事のURL（Crawlerが取得したもの。nullの場合あり） |
 
 **エラー**
 
@@ -311,6 +328,10 @@ Article詳細。配下のSentence一覧と各Sentenceの生成状況を含む。
   "details": {
     "target_word": "delay",
     "choices": ["遅延", "帯域幅", "スループット", "冗長性"]
+  },
+  "source": {
+    "title": "Understanding Latency in Distributed Systems",
+    "url": "https://example.com/latency-article"
   },
   "created_at": "2026-03-02T10:05:00Z"
 }
