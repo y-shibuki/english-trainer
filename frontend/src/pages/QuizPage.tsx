@@ -3,8 +3,16 @@ import { useSearchParams, useNavigate } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { getQuestions, submitAnswer } from '@/api/questions'
-import type { Question, AnswerResponse, VocabularyDetails } from '@/types/question'
+import type { Question, AnswerResponse, VocabularyDetails, FillInTheBlankDetails } from '@/types/question'
 
 type AnswerState = {
   response: AnswerResponse
@@ -20,10 +28,10 @@ export default function QuizPage() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [answered, setAnswered] = useState<AnswerState | null>(null)
   const [results, setResults] = useState<boolean[]>([])
-  const [textInput, setTextInput] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false)
 
   useEffect(() => {
     if (!type) return
@@ -96,7 +104,7 @@ export default function QuizPage() {
 
   const question = questions[currentIndex]
 
-  const handleVocabularyAnswer = async (choice: string) => {
+  const handleChoiceAnswer = async (choice: string) => {
     if (submitting || answered) return
     setSubmitting(true)
     try {
@@ -108,35 +116,32 @@ export default function QuizPage() {
     }
   }
 
-  const handleFillInBlankAnswer = async () => {
-    if (submitting || answered || !textInput.trim()) return
-    setSubmitting(true)
-    try {
-      const res = await submitAnswer(question.id, textInput.trim())
-      setAnswered({ response: res, userAnswer: textInput.trim() })
-      setResults((prev) => [...prev, res.is_correct])
-    } finally {
-      setSubmitting(false)
-    }
-  }
-
   const handleNext = () => {
     setAnswered(null)
-    setTextInput('')
     setCurrentIndex((i) => i + 1)
   }
 
-  const vocabDetails = question.type === 'vocabulary'
-    ? (question.details as VocabularyDetails)
-    : null
+  const choices = question.type === 'vocabulary'
+    ? (question.details as VocabularyDetails).choices
+    : (question.details as FillInTheBlankDetails).choices
 
   return (
+    <>
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-2xl space-y-4">
         <div className="flex items-center justify-between">
-          <Badge variant="outline">
-            {type === 'vocabulary' ? '単語問題' : '穴埋め問題'}
-          </Badge>
+          <div className="flex items-center gap-3">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsConfirmOpen(true)}
+            >
+              ← ホームへ
+            </Button>
+            <Badge variant="outline">
+              {type === 'vocabulary' ? '単語問題' : '穴埋め問題'}
+            </Badge>
+          </div>
           <span className="text-sm text-muted-foreground">
             {currentIndex + 1} / {questions.length}
           </span>
@@ -150,50 +155,28 @@ export default function QuizPage() {
           </CardHeader>
 
           <CardContent className="space-y-4">
-            {question.type === 'vocabulary' && vocabDetails && (
-              <div className="grid grid-cols-2 gap-2">
-                {vocabDetails.choices.map((choice) => {
-                  const isSelected = answered?.userAnswer === choice
-                  const isCorrect = answered?.response.correct_answer === choice
-                  let variant: 'default' | 'outline' | 'destructive' = 'outline'
-                  if (answered) {
-                    if (isCorrect) variant = 'default'
-                    else if (isSelected && !isCorrect) variant = 'destructive'
-                  }
-                  return (
-                    <Button
-                      key={choice}
-                      variant={variant}
-                      disabled={!!answered || submitting}
-                      onClick={() => handleVocabularyAnswer(choice)}
-                      className="h-auto py-3 text-left justify-start whitespace-normal"
-                    >
-                      {choice}
-                    </Button>
-                  )
-                })}
-              </div>
-            )}
-
-            {question.type === 'fill_in_the_blank' && (
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={textInput}
-                  onChange={(e) => setTextInput(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === 'Enter') handleFillInBlankAnswer() }}
-                  disabled={!!answered || submitting}
-                  placeholder="英単語を入力..."
-                  className="flex-1 h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50"
-                />
-                <Button
-                  onClick={handleFillInBlankAnswer}
-                  disabled={!!answered || submitting || !textInput.trim()}
-                >
-                  解答する
-                </Button>
-              </div>
-            )}
+            <div className="grid grid-cols-2 gap-2">
+              {choices.map((choice) => {
+                const isSelected = answered?.userAnswer === choice
+                const isCorrect = answered?.response.correct_answer === choice
+                let variant: 'default' | 'outline' | 'destructive' = 'outline'
+                if (answered) {
+                  if (isCorrect) variant = 'default'
+                  else if (isSelected && !isCorrect) variant = 'destructive'
+                }
+                return (
+                  <Button
+                    key={choice}
+                    variant={variant}
+                    disabled={!!answered || submitting}
+                    onClick={() => handleChoiceAnswer(choice)}
+                    className="h-auto py-3 text-left justify-start whitespace-normal"
+                  >
+                    {choice}
+                  </Button>
+                )
+              })}
+            </div>
 
             {answered && (
               <div
@@ -236,5 +219,19 @@ export default function QuizPage() {
         </Card>
       </div>
     </div>
+
+    <Dialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>ホームに戻りますか？</DialogTitle>
+          <DialogDescription>進行状況は保存されません。</DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setIsConfirmOpen(false)}>キャンセル</Button>
+          <Button variant="destructive" onClick={() => navigate('/')}>戻る</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+    </>
   )
 }

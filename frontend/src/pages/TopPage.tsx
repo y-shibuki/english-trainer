@@ -18,10 +18,7 @@ export default function TopPage() {
         </div>
 
         <div className="grid gap-4">
-          <Card
-            className="cursor-pointer transition-colors hover:bg-accent"
-            onClick={() => handleSelect('vocabulary')}
-          >
+          <Card>
             <CardHeader>
               <CardTitle>単語問題</CardTitle>
               <CardDescription>
@@ -35,10 +32,7 @@ export default function TopPage() {
             </CardContent>
           </Card>
 
-          <Card
-            className="cursor-pointer transition-colors hover:bg-accent"
-            onClick={() => handleSelect('fill_in_the_blank')}
-          >
+          <Card>
             <CardHeader>
               <CardTitle>穴埋め問題</CardTitle>
               <CardDescription>
@@ -46,7 +40,7 @@ export default function TopPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="w-full" variant="outline" onClick={() => handleSelect('fill_in_the_blank')}>
+              <Button className="w-full" onClick={() => handleSelect('fill_in_the_blank')}>
                 はじめる
               </Button>
             </CardContent>
