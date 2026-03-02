@@ -6,22 +6,22 @@ from .schemas import VocabularyQuestion
 MODEL = "gemini-2.0-flash-lite"
 
 SYSTEM_PROMPT = """
-You are an expert English teacher creating vocabulary quiz questions for Japanese software engineers learning technical English.
-Your role is to extract one important technical word from the given sentence and generate a vocabulary quiz question in the specified JSON format.
-Always respond with valid JSON only.
+あなたは日本人ソフトウェアエンジニア向けの英語学習クイズを作成する英語教師です。
+与えられた英文から重要な技術用語を1つ抽出し、指定されたJSON形式で単語クイズを生成してください。
+必ず有効なJSONのみで回答してください。
 """.strip()
 
 USER_PROMPT_TEMPLATE = """
-Extract one important technical English word from the following sentence and create a vocabulary quiz question.
+以下の英文から重要な技術英単語を1つ抽出し、単語クイズを作成してください。
 
-Sentence: {sentence}
+英文: {sentence}
 
-Requirements:
-- target_word: The extracted English word (lowercase)
-- question_text: Same as target_word (the word itself is the question)
-- correct_answer: The Japanese translation of target_word
-- choices: Array of exactly 4 Japanese options including correct_answer (shuffled order)
-- explanation: 1-2 sentences in Japanese explaining the word's meaning and usage in software engineering context
+出力要件:
+- target_word: 抽出した英単語（小文字）
+- question_text: target_word と同じ値（英単語そのものが問題になる）
+- correct_answer: target_word の日本語訳
+- choices: correct_answer を含む日本語の選択肢4つ（シャッフルした順序）
+- explanation: ソフトウェアエンジニアリングの文脈でその単語の意味と使い方を説明する1〜2文の日本語解説
 """.strip()
 
 

@@ -6,22 +6,22 @@ from .schemas import FillInBlankQuestion
 MODEL = "gemini-2.0-flash-lite"
 
 SYSTEM_PROMPT = """
-You are an expert English teacher creating fill-in-the-blank quiz questions for Japanese software engineers learning technical English.
-Your role is to take an English sentence, replace one important technical word with "___", and generate a quiz question in the specified JSON format.
-Always respond with valid JSON only.
+あなたは日本人ソフトウェアエンジニア向けの英語学習クイズを作成する英語教師です。
+与えられた英文の重要な技術用語を「___」に置き換えた穴埋め問題を、指定されたJSON形式で生成してください。
+必ず有効なJSONのみで回答してください。
 """.strip()
 
 USER_PROMPT_TEMPLATE = """
-Create a fill-in-the-blank quiz question from the following English sentence by replacing one important technical word with "___".
+以下の英文から重要な技術英単語を1つ「___」に置き換えた穴埋め問題を作成してください。
 
-Sentence: {sentence}
+英文: {sentence}
 
-Requirements:
-- target_word: The English word that was replaced with "___" (lowercase)
-- question_text: The original sentence with target_word replaced by "___"
-- correct_answer: Same as target_word
-- choices: Array of exactly 4 English word options including correct_answer (shuffled order, all lowercase)
-- explanation: 1-2 sentences in Japanese explaining why target_word fits and its meaning in context
+出力要件:
+- target_word: 「___」に置き換えた英単語（小文字）
+- question_text: target_word を「___」に置き換えた元の英文
+- correct_answer: target_word と同じ値
+- choices: correct_answer を含む英単語の選択肢4つ（シャッフルした順序、すべて小文字）
+- explanation: その英単語が文中でなぜ適切かとその意味を説明する1〜2文の日本語解説
 """.strip()
 
 
