@@ -1,0 +1,38 @@
+version: '3'
+
+tasks:
+  fe:dev:
+    desc: FE開発サーバーを起動する
+    dir: frontend
+    cmds:
+      - npm run dev
+
+  fe:build:
+    desc: FEをビルドする
+    dir: frontend
+    cmds:
+      - npm run build
+
+  fe:lint:
+    desc: FEのlintを実行する
+    dir: frontend
+    cmds:
+      - npm run lint
+
+  fe:install:
+    desc: FEの依存パッケージをインストールする
+    dir: frontend
+    cmds:
+      - npm install
+
+  worker:run:
+    desc: WorkerのQuestion生成スクリプトを実行する
+    dir: worker
+    cmds:
+      - uv run python main.py
+
+  worker:sync:
+    desc: Workerの依存パッケージをインストールする
+    dir: worker
+    cmds:
+      - uv sync
