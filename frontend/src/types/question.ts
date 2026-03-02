@@ -5,6 +5,7 @@ export type VocabularyDetails = {
 
 export type FillInTheBlankDetails = {
   target_word: string
+  choices: string[]
 }
 
 export type Question = {
