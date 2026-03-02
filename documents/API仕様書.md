@@ -243,11 +243,11 @@ Article詳細。配下のSentence一覧と各Sentenceの生成状況を含む。
       "id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
       "sentence_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
       "type": "vocabulary",
-      "question_text": "Latency is the time ___ between a request and a response.",
+      "question_text": "latency",
       "correct_answer": "遅延",
       "explanation": "「latency」は「遅延」を意味し、リクエストとレスポンスの間の時間差を指す。",
       "details": {
-        "target_word": "delay",
+        "target_word": "latency",
         "choices": ["遅延", "帯域幅", "スループット", "冗長性"]
       },
       "source": {
@@ -264,7 +264,8 @@ Article詳細。配下のSentence一覧と各Sentenceの生成状況を含む。
       "correct_answer": "latency",
       "explanation": "「latency」は分散システムにおいてネットワークホップをまたいで蓄積する遅延時間のこと。",
       "details": {
-        "target_word": "latency"
+        "target_word": "latency",
+        "choices": ["latency", "bandwidth", "throughput", "jitter"]
       },
       "source": {
         "title": "Understanding Latency in Distributed Systems",
@@ -282,18 +283,19 @@ Article詳細。配下のSentence一覧と各Sentenceの生成状況を含む。
 
 | フィールド | 説明 |
 |----------|------|
-| `target_word` | 問われる単語（Sentenceの該当語）|
-| `choices` | 選択肢4つ（正解を含む） |
+| `target_word` | 問われる英単語 |
+| `choices` | 日本語訳の選択肢4つ（正解を含む） |
 
-`question_text` は `target_word` を `___` に置換した文。`correct_answer` は正解の日本語訳。
+`question_text` は問われる英単語そのもの。`correct_answer` は正解の日本語訳。
 
 **fill_in_the_blank（穴埋め問題）**
 
 | フィールド | 説明 |
 |----------|------|
 | `target_word` | 空欄にした元の英単語 |
+| `choices` | 英単語の選択肢4つ（正解を含む） |
 
-`question_text` はAIが生成した穴埋め文（`___` で空欄）。`correct_answer` は元の英単語。
+`question_text` はAIが生成した穴埋め文（`___` で空欄）。`correct_answer` は空欄に入る英単語。
 
 **sourceフィールド**
 
@@ -322,11 +324,11 @@ Article詳細。配下のSentence一覧と各Sentenceの生成状況を含む。
   "id": "c3d4e5f6-a7b8-9012-cdef-123456789012",
   "sentence_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "type": "vocabulary",
-  "question_text": "Latency is the time ___ between a request and a response.",
+  "question_text": "latency",
   "correct_answer": "遅延",
   "explanation": "「latency」は「遅延」を意味し、リクエストとレスポンスの間の時間差を指す。",
   "details": {
-    "target_word": "delay",
+    "target_word": "latency",
     "choices": ["遅延", "帯域幅", "スループット", "冗長性"]
   },
   "source": {
